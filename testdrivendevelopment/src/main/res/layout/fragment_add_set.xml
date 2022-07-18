@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/exerciseTV_exerciseF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="20dp"
+        android:text="Exercise"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="79dp" />
+
+    <EditText
+        android:id="@+id/weightET_exerciseF"
+        android:layout_width="92dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="20"
+        android:inputType="number|numberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/repsET_exerciseF"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weightTV_exerciseF" />
+
+    <EditText
+        android:id="@+id/repsET_exerciseF"
+        android:layout_width="92dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="5"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/weightET_exerciseF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/weightET_exerciseF"
+        app:layout_constraintTop_toTopOf="@+id/weightET_exerciseF" />
+
+    <TextView
+        android:id="@+id/weightTV_exerciseF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Weight (kg)"
+        app:layout_constraintEnd_toEndOf="@+id/weightET_exerciseF"
+        app:layout_constraintStart_toStartOf="@+id/weightET_exerciseF"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <TextView
+        android:id="@+id/repsTV_exerciseF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reps"
+        app:layout_constraintBottom_toBottomOf="@+id/weightTV_exerciseF"
+        app:layout_constraintEnd_toEndOf="@+id/repsET_exerciseF"
+        app:layout_constraintStart_toStartOf="@+id/repsET_exerciseF"
+        app:layout_constraintTop_toTopOf="@+id/weightTV_exerciseF" />
+
+    <Button
+        android:id="@+id/addB_exerciseF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add set"
+        app:layout_constraintEnd_toStartOf="@+id/deleteB_exerciseF"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weightET_exerciseF" />
+
+    <Button
+        android:id="@+id/deleteB_exerciseF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="@+id/addB_exerciseF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addB_exerciseF"
+        app:layout_constraintTop_toTopOf="@+id/addB_exerciseF" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deleteB_exerciseF" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/setsRV_exerciseF"
+        android:layout_width="410dp"
+        android:layout_height="417dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

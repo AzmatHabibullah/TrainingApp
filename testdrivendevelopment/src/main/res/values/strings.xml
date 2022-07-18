@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">TestDrivenDevelopment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_category">Add category</string>
+    <string name="category">Category</string>
+    <string name="category_name">Category name</string>
+
+
+    <!-- AddCategoryFragment -->
+    <string name="category_blank">Category cannot be blank</string>
+    <string name="category_duplicate">Category cannot be duplicate</string>
+    <string name="category_add_failed">Could not add category</string>
+    <string name="exercise_name">Exercise name</string>
+    <string name="primary_muscle">Primary muscle</string>
+    <string name="secondary_muscle">Secondary muscle</string>
+    <string name="add_exercise">Add exercise</string>
+
+    <string name="exercise_blank">Exercise cannot be blank</string>
+    <string name="exercise_duplicate">Exercise cannot be duplicate</string>
+    <string name="exercise_add_failed">Could not add exercise</string>
+
+    <string name="set_weight_blank">Weight cannot be blank</string>
+    <string name="set_weight_pos">Weight must be positive</string>
+    <string name="set_reps_blank">Reps cannot be blank</string>
+    <string name="set_reps_pos">Reps must be a positive integer</string>
+
+</resources>
