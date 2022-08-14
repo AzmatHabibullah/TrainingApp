@@ -1,7 +1,9 @@
 package com.azmat.testdrivendevelopment.ui.add_exercise
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.azmat.testdrivendevelopment.R
+import com.azmat.testdrivendevelopment.data.models.TrainingApi
 import com.azmat.testdrivendevelopment.db.repo.CategoryRepository
 import com.azmat.testdrivendevelopment.db.repo.ExerciseRepository
 import com.azmat.testdrivendevelopment.db.repo.MuscleRepository
@@ -16,7 +18,8 @@ class AddExerciseViewModel @Inject constructor(
     private val exerciseRepository: ExerciseRepository,
     private val categoryRepository: CategoryRepository,
     private val muscleRepository: MuscleRepository,
-    private val dispatchers: DispatcherProvider
+    private val dispatchers: DispatcherProvider,
+    private val apiInterface: TrainingApi
 ) : ViewModel() {
 
     private val _exerciseForm = MutableLiveData<AddFormState>()
@@ -34,7 +37,10 @@ class AddExerciseViewModel @Inject constructor(
     fun addExercise(exerciseName: String, categoryName: String, primaryMuscleName: String, secondaryMuscleName: String) {
         viewModelScope.launch(dispatchers.io) {
             when (val result = exerciseRepository.insert(exerciseName, categoryName, primaryMuscleName, secondaryMuscleName)) {
-                is Resource.Success -> _addExerciseResult.postValue(AddResult("Added $exerciseName"))
+                is Resource.Success -> {
+                    _addExerciseResult.postValue(AddResult("Added $exerciseName"))
+                    Log.d("AEVM", apiInterface.getExercise().body().toString())
+                }
                 is Resource.Error ->
                     if (result.message?.contains("duplicate") == true) {
                         _addExerciseResult.postValue(AddResult(error = R.string.exercise_duplicate))

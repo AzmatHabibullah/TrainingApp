@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Database(entities=[Category::class, Exercise::class, Muscle::class, TrainingSet::class, TrainingExercise::class, TrainingWorkout::class], version = 1, exportSchema = false)
+
 abstract class MasterDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
@@ -21,6 +22,7 @@ abstract class MasterDatabase : RoomDatabase() {
     abstract fun trainingSetDao(): TrainingSetDao
     abstract fun trainingExerciseDao(): TrainingExerciseDao
     abstract fun trainingWorkoutDao(): TrainingWorkoutDao
+    abstract fun trainingExerciseWithSetDao(): TrainingExerciseWithSetDao
 
     class ExerciseCategoryDatabaseCallback( // todo separate these out
         private val scope: CoroutineScope
@@ -32,7 +34,8 @@ abstract class MasterDatabase : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch {
                     populateDatabase(database.exerciseDao(), database.categoryDao(), database.muscleDao(),
-                    database.trainingSetDao(), database.trainingExerciseDao(), database.trainingWorkoutDao())
+                    database.trainingSetDao(), database.trainingExerciseDao(),
+                        database.trainingExerciseWithSetDao(), database.trainingWorkoutDao())
                 }
             }
         }
@@ -40,6 +43,7 @@ abstract class MasterDatabase : RoomDatabase() {
         suspend fun populateDatabase(exerciseDao: ExerciseDao, categoryDao: CategoryDao,
                                      muscleDao: MuscleDao, trainingSetDao: TrainingSetDao,
                                      trainingExerciseDao: TrainingExerciseDao,
+                                     trainingExerciseWithSetDao: TrainingExerciseWithSetDao,
         trainingWorkoutDao: TrainingWorkoutDao) {
             // Delete all content here.
             exerciseDao.deleteAll()
@@ -48,7 +52,6 @@ abstract class MasterDatabase : RoomDatabase() {
             trainingSetDao.deleteAll()
             trainingExerciseDao.deleteAll()
             trainingWorkoutDao.deleteAll()
-
 
             Log.d("db creation", "create legs")
             val legs = Category(0, "Legs")

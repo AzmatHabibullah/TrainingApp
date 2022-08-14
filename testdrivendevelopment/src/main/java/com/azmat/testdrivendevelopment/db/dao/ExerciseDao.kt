@@ -27,7 +27,7 @@ interface ExerciseDao {
     @Query("SELECT exercise_name FROM exercise_table WHERE category_name=:categoryNameToCheck")
     fun getExercisesInCategory(categoryNameToCheck: String): Flow<List<String>>
 
-    @Query("SELECT * FROM exercise_table WHERE exercise_uid=:exerciseUid LIMIT 1")
+    @Query("SELECT * FROM exercise_table WHERE uid=:exerciseUid LIMIT 1")
     fun getExerciseFromUid(exerciseUid: Long): Exercise
 
     @Delete

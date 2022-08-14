@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="buttonLabel">#FFFFFF</color>
+    <color name="colorPrimary">#535353</color>
+    <color name="commentColour">#171717</color>
+    <string name="settings">Settings</string>
+    <color name="login_text">#000000</color>
+    <color name="login_textColorHint">#505050</color>
+    <color name="default_background">#B8B8B8</color>
 </resources>

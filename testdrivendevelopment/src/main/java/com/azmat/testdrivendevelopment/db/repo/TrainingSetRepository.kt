@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TrainingSetRepository {
     suspend fun insert(trainingSet: TrainingSet): Resource<Long>
+    fun getSets(): Resource<Flow<List<TrainingSet>>>
     suspend fun getSetNumber(trainingSetUid: Long): Resource<Int>
     fun getSetsFromExercise(trainingExerciseUid: Long): Resource<Flow<List<TrainingSet>>>
     suspend fun getComment(trainingSetUid: Long): Resource<String>

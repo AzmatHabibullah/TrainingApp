@@ -3,6 +3,7 @@ package com.azmat.testdrivendevelopment
 
 import android.content.Context
 import androidx.room.Room
+import com.azmat.testdrivendevelopment.data.models.TrainingApi
 import com.azmat.testdrivendevelopment.db.MasterDatabase
 import com.azmat.testdrivendevelopment.db.dao.*
 import com.azmat.testdrivendevelopment.db.repo.*
@@ -17,10 +18,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private const val BASE_URL = "https://api.exchangeratesapi.io/v1/"
+private const val BASE_URL = "http://10.0.2.2:8083/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -59,6 +62,11 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideTrainingExerciseWithSetDao(database: MasterDatabase): TrainingExerciseWithSetDao = database.trainingExerciseWithSetDao()
+
+
+    @Singleton
+    @Provides
     fun provideTrainingWorkoutDao(database: MasterDatabase): TrainingWorkoutDao = database.trainingWorkoutDao()
 
 
@@ -93,6 +101,19 @@ object AppModule {
     fun provideTrainingExerciseRepository(database: MasterDatabase): TrainingExerciseRepository =
         DefaultTrainingExerciseRepository(database.trainingExerciseDao())
 
+    @Singleton
+    @Provides
+    fun provideTrainingExerciseWithSetRepository(database: MasterDatabase): TrainingExerciseWithSetRepository =
+        DefaultTrainingExerciseWithSetRepository(database.trainingExerciseWithSetDao())
+
+
+    @Singleton
+    @Provides
+    fun provideTrainingApi(): TrainingApi = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(TrainingApi::class.java)
 
     @Singleton
     @Provides

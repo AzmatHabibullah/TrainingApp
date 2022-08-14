@@ -38,8 +38,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/setsRV_dayF"
-        android:layout_width="412dp"
-        android:layout_height="485dp"
+        android:layout_width="375dp"
+        android:layout_height="481dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

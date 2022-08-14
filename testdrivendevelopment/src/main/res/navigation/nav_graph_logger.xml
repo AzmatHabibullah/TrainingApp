@@ -27,7 +27,7 @@
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_dayFragment_to_exerciseFragment"
-            app:destination="@id/exerciseFragment"
+            app:destination="@id/addSetFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <argument
@@ -40,7 +40,17 @@
         android:label="fragment_add_exercise"
         tools:layout="@layout/fragment_add_exercise" />
     <fragment
-        android:id="@+id/exerciseFragment"
-        android:name="com.azmat.testdrivendevelopment.ui.add_set.ExerciseFragment"
-        android:label="ExerciseFragment" />
+        android:id="@+id/addSetFragment"
+        android:name="com.azmat.testdrivendevelopment.ui.add_set.AddSetFragment"
+        android:label="AddSetFragment">
+        <argument
+            android:name="workoutUid"
+            app:argType="long" />
+        <argument
+            android:name="exerciseUid"
+            app:argType="long" />
+        <argument
+            android:name="trainingExerciseUid"
+            app:argType="long" />
+    </fragment>
 </navigation>

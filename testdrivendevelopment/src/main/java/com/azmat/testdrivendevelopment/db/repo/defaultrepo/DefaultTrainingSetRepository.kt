@@ -19,6 +19,14 @@ class DefaultTrainingSetRepository @Inject constructor(
         }
     }
 
+    override fun getSets(): Resource<Flow<List<TrainingSet>>> {
+        return try {
+            Resource.Success(trainingSetDao.getSets())
+        } catch (e: Exception) {
+            Resource.Error("Could not get training sets")
+        }
+    }
+
     override suspend fun getSetNumber(trainingSetUid: Long): Resource<Int> {
         return try {
             Resource.Success(trainingSetDao.getSetNumber(trainingSetUid))

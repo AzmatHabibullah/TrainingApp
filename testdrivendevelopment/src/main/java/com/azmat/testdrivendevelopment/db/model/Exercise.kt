@@ -7,7 +7,7 @@ import androidx.room.Relation
 
 @Entity(tableName = "exercise_table")
 data class Exercise (
-    @PrimaryKey(autoGenerate = true) val exercise_uid: Long,
+    @PrimaryKey(autoGenerate = true) val uid: Long,
     val exercise_name: String,
     @Embedded val category: Category,
     @Embedded(prefix="primary_") val primary_muscle: Muscle,

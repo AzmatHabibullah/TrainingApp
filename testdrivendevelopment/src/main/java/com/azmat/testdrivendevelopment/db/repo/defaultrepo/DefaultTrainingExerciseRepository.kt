@@ -42,4 +42,12 @@ class DefaultTrainingExerciseRepository @Inject constructor(
     override suspend fun countExercises(workoutUid: Long): Resource<Int> {
         TODO("Not yet implemented")
     }
+
+    override fun getTrainingExercises(): Resource<Flow<List<TrainingExercise>>> {
+       return try {
+           Resource.Success(trainingExerciseDao.getAll())
+       } catch (e: Exception) {
+           Resource.Error("Could not get all training exercises")
+       }
+    }
 }

@@ -38,9 +38,10 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.calendarVCalendarF.setOnDateChangeListener { calendarView, year, month, date ->
-            Log.d(tag, "Changing date to $date-$month-$year")
             val selectedCal = Calendar.getInstance()
-            selectedCal.set(year, month, date)
+            selectedCal.set(year, month, date, 0, 0, 0)
+            selectedCal.set(Calendar.MILLISECOND, 0)
+            Log.d(tag, "Changing date to $date-$month-$year with id ${selectedCal.timeInMillis}")
             val action = CalendarFragmentDirections.actionCalendarFragmentToDayFragment(selectedCal.timeInMillis)
             calendarView.findNavController().navigate(action)
         }
@@ -50,24 +51,4 @@ class CalendarFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddExerciseFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CalendarFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
-
 }

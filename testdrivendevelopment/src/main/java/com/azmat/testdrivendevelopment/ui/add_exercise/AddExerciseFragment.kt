@@ -45,6 +45,8 @@ class AddExerciseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnAddExerciseExerciseFragment.isEnabled = false
+        binding.etExerciseNameExerciseFragment.setSingleLine()
+        binding.etExerciseNameExerciseFragment.movementMethod = null
 
         defineState(exerciseViewModel.exerciseFormState,
             binding.btnAddExerciseExerciseFragment,

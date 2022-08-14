@@ -17,7 +17,8 @@ interface TrainingSetDao {
     fun getSets(): Flow<List<TrainingSet>>
 
     @Query("SELECT * FROM training_set_table " +
-            "JOIN exercise_table ON training_set_table.training_exercise_uid = exercise_table.exercise_uid")
+            "JOIN exercise_table ON training_set_table.training_exercise_uid = exercise_table.uid"
+    )
     fun getExercises(): Flow<List<Exercise>>
 
     @Query("SELECT * FROM training_set_table WHERE training_exercise_uid = :trainingExerciseUid " +

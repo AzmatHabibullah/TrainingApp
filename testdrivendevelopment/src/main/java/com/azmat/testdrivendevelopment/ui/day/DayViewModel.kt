@@ -2,13 +2,9 @@ package com.azmat.testdrivendevelopment.ui.day
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.azmat.testdrivendevelopment.db.model.Exercise
-import com.azmat.testdrivendevelopment.db.model.TrainingExercise
-import com.azmat.testdrivendevelopment.db.model.TrainingWorkout
-import com.azmat.testdrivendevelopment.db.repo.CategoryRepository
-import com.azmat.testdrivendevelopment.db.repo.ExerciseRepository
-import com.azmat.testdrivendevelopment.db.repo.TrainingExerciseRepository
-import com.azmat.testdrivendevelopment.db.repo.TrainingWorkoutRepository
+import com.azmat.testdrivendevelopment.data.models.Event
+import com.azmat.testdrivendevelopment.db.model.*
+import com.azmat.testdrivendevelopment.db.repo.*
 import com.azmat.testdrivendevelopment.utils.DispatcherProvider
 import com.azmat.testdrivendevelopment.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +17,8 @@ private const val dateParam = "date"
 class DayViewModel @Inject constructor(
     val exerciseRepository: ExerciseRepository,
      categoryRepository: CategoryRepository,
-     private val trainingExerciseRepository: TrainingExerciseRepository,
+    private val trainingExerciseRepository: TrainingExerciseRepository,
+    trainingExerciseWithSetRepository: TrainingExerciseWithSetRepository,
      private val trainingWorkoutRepository: TrainingWorkoutRepository,
      private val dispatchers: DispatcherProvider,
      state: SavedStateHandle
@@ -29,22 +26,28 @@ class DayViewModel @Inject constructor(
 
     var categories: LiveData<List<String>> = categoryRepository.getCategoryNames().data!!.asLiveData()
     var exercises: LiveData<List<Exercise>> = exerciseRepository.getExercises().data!!.asLiveData()
+    var exercisesWithSets: LiveData<List<TrainingExerciseWithSet>> = trainingExerciseWithSetRepository.getAllData().data!!.asLiveData()
 
     private var categoryFilter = MutableLiveData("%")
 
     private var _date = MutableLiveData<Long>(state.get<Long>(dateParam))
     var workoutsOnDate: LiveData<List<TrainingWorkout>> = trainingWorkoutRepository.getWorkoutsByDate(_date.value!!).data!!.asLiveData()
 
-    private var _addTrainingExerciseResult = MutableLiveData<AddTrainingExerciseResult>()
-    var addTrainingExerciseResult: LiveData<AddTrainingExerciseResult> = _addTrainingExerciseResult
 
-    var workoutUid = MutableLiveData<Long>()
+    private var _trainingExerciseId = MutableLiveData<Event<Long>>()
+    var trainingExerciseId: LiveData<Event<Long>> = _trainingExerciseId
+
+    private var _exerciseId = MutableLiveData<Long>()
+    var exerciseId: LiveData<Long> = _exerciseId
+
+    private var _workoutUid = MutableLiveData<Long>()
+    var workoutUid: LiveData<Long> = _workoutUid
     var trainingExercisesInWorkout: LiveData<List<TrainingExercise>> = Transformations.switchMap(
-        workoutUid
+        _workoutUid
     ) { workout_id -> trainingExerciseRepository.getInWorkout(workout_id).data!!.asLiveData() }
 
 
-    fun setFilter(newFilter: String) {
+    fun setCategoryFilter(newFilter: String) {
         categoryFilter.value = newFilter // apply the filter
     }
 
@@ -67,47 +70,49 @@ class DayViewModel @Inject constructor(
 
     fun insertTrainingExercise(exerciseUid: Long) {
         viewModelScope.launch(dispatchers.io) {
-            val exercise = TrainingExercise(0, exerciseUid, workoutUid.value!!,
-                trainingExercisesInWorkout.value!!.size + 1)
+            _exerciseId.postValue(exerciseUid)
+            val exercise = TrainingExercise(
+                uid = 0, exercise_uid = exerciseUid,
+                workout_uid = _workoutUid.value!!,
+                exercise_number = trainingExercisesInWorkout.value!!.size + 1
+            )
             when (val result = trainingExerciseRepository.insert(exercise)) {
                 is Resource.Success -> {
                     Log.d("DVM", "Added training exercise $exercise")
-                    _addTrainingExerciseResult.postValue(AddTrainingExerciseResult(
-                        longArrayOf(result.data!!, exerciseUid, workoutUid.value!!)))
+                    _trainingExerciseId.postValue(Event(result.data!!))
                 }
                 is Resource.Error -> {
                     Log.d("DVM", "Failed to add training exercise $exercise")
-                    _addTrainingExerciseResult.postValue(AddTrainingExerciseResult(error = -1)) // todo
                 }
             }
-        } // todo how do I get value of UID inserted
+        }
     }
 
     fun initialiseWorkout() {
         viewModelScope.launch(dispatchers.io) {
             Log.d("DVM", "${_date.value}, ${workoutsOnDate.value}")
             if (workoutsOnDate.value == null) {
-                Log.d("DVM", "workouts null")
+                Log.d("DVM", "workouts null, fetching data")
+                Log.d("DVM", "${workoutsOnDate.value}")
             } else {
                 val existingOnDate = workoutsOnDate.value!!.size
                 if (existingOnDate == 0) {
+                    Log.d("DVM", "no workouts today")
                     val workout = TrainingWorkout(0, _date.value!!, existingOnDate + 1)
                     when (val result = trainingWorkoutRepository.insert(workout)) {
                         is Resource.Success -> {
                             Log.d("DVM", "Added training workout $workout")
-                            workoutUid.postValue(result.data)
+                            _workoutUid.postValue(result.data)
                         }
                         is Resource.Error -> {
                             Log.d("DVM", "Failed to add training workout $workout")
                         }
                     }
                 } else {
-                    workoutUid.postValue(workoutsOnDate.value!!.get(0).uid)
-                    Log.d("DVM", "Workout already exists")
+                    _workoutUid.postValue(workoutsOnDate.value!![0].uid)
+                    Log.d("DVM", "$existingOnDate workouts already exist")
                 }
             }
         }
     }
 }
-
-// todo parcelable

@@ -3,7 +3,6 @@ package com.azmat.testdrivendevelopment.ui.add_set
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +10,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azmat.testdrivendevelopment.adapters.TrainingSetListAdapter
 import com.azmat.testdrivendevelopment.databinding.FragmentAddSetBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val exerciseUidParam = "exerciseUid"
-private const val workoutUidParam = "workoutUid"
-private const val trainingExerciseUidParam = "trainingExerciseUid"
-
 @AndroidEntryPoint
-class ExerciseFragment : Fragment() {
+class AddSetFragment : Fragment() {
 
     private var _binding: FragmentAddSetBinding? = null
     private val binding get() = _binding!!
@@ -31,12 +27,14 @@ class ExerciseFragment : Fragment() {
     private var trainingExerciseUid: Long? = null
     private var workoutUid: Long? = null
 
+    val args: AddSetFragmentArgs by navArgs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            exerciseUid = it.getLong(exerciseUidParam)
-            trainingExerciseUid = it.getLong(trainingExerciseUidParam)
-            workoutUid = it.getLong(workoutUidParam)
+            exerciseUid = args.exerciseUid
+            trainingExerciseUid = args.trainingExerciseUid
+            workoutUid = args.workoutUid
         }
     }
 
@@ -87,6 +85,7 @@ class ExerciseFragment : Fragment() {
             {}
         )
 
+        // TODO: fix entry with 0 text for weight or reps
 
         addSetViewModel.trainingSets.observe(viewLifecycleOwner, Observer {
             trainingSets ->
@@ -140,7 +139,7 @@ class ExerciseFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ExerciseFragment().apply {
+            AddSetFragment().apply {
                 arguments = Bundle().apply {
 
                 }

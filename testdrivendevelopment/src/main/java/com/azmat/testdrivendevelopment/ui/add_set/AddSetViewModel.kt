@@ -12,7 +12,6 @@ import com.azmat.testdrivendevelopment.ui.add_exercise.AddResult
 import com.azmat.testdrivendevelopment.utils.DispatcherProvider
 import com.azmat.testdrivendevelopment.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hilt_aggregated_deps._com_azmat_testdrivendevelopment_ui_add_set_ExerciseFragment_GeneratedInjector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

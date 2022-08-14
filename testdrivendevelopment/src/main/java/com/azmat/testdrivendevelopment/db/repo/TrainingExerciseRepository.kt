@@ -10,4 +10,5 @@ interface TrainingExerciseRepository {
     fun getInWorkout(workoutUid: Long) : Resource<Flow<List<TrainingExercise>>>
     suspend fun delete(trainingExerciseUid: Long)
     suspend fun countExercises(workoutUid: Long): Resource<Int>
+    fun getTrainingExercises(): Resource<Flow<List<TrainingExercise>>>
 }
